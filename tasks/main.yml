@@ -1,2 +1,17 @@
 ---
 # Role tasks
+
+- block:
+    - name: setup /etc/hosts entries
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "^{{ etc_hosts_item.0.address }} "
+        line: "{{ etc_hosts_item.address etc_hosts_item.hostnames | join(' ')}}"
+        state: "{{ etc_hosts_item.state | default('present') }}"
+      loop: "{{ etc_hosts_to_manage }}"
+      loop_control:
+        loop_var: etc_hosts_item
+        label: "{{ etc_hosts_item.address }}"
+  vars:
+  tags:
+    - role::etc_hosts
