@@ -1,2 +1,73 @@
 ---
 # Tasks for testing role
+
+- name: run idempotence test
+  hosts: localhost
+  roles:
+    - role: amtega.vagrant_presets
+      vagrant_presets_images_json_query: >-
+        [? starts_with(name, `centos-6`)
+           || starts_with(name, `centos-7`)
+           || starts_with(name, `debian-9`)
+           || starts_with(name, `fedora-27`)
+           || starts_with(name, `fedora-28`) ]
+
+    - role: amtega.vagrant_sandbox
+      vagrant_sandbox_state: started
+  tags:
+    - sandbox
+
+- name: prepare vagrant vms for test
+  hosts: vagrant_sandbox_vms
+  tasks:
+    - name: setup extra hosts
+      set_fact:
+        etc_hosts_extra:
+          address: 192.168.13.14
+          state: present
+          hostnames:
+            - acme5
+            - acme6
+  tags:
+    - idempotence
+
+- name: test etc_hosts role
+  hosts: vagrant_sandbox_vms
+  roles:
+    - amtega.etc_hosts
+  vars:
+    etc_hosts_load_from_hostvars: yes
+    etc_hosts:
+      - address: 192.168.13.12
+        state: present
+        hostnames:
+          - acme1
+          - acme2
+      - address: 192.168.13.13
+        state: present
+        hostnames:
+          - acme3
+          - acme4
+  tasks:
+    - name: read /etc/hosts file
+      command: cat /etc/hosts
+      changed_when: false
+      register: read_hosts_result
+
+    - name: check that /etc/hosts contains required hosts
+      assert:
+        that:
+          - read_hosts_result.stdout is search("192.168.13.12 acme1 acme2")
+          - read_hosts_result.stdout is search("192.168.13.13 acme3 acme4")
+          - read_hosts_result.stdout is search("192.168.13.14 acme5 acme6")
+  tags:
+    - idempotence
+
+- name: cleanup vagrant vagrant sandbox
+  hosts: localhost
+  roles:
+    - role: amtega.vagrant_sandbox
+      vagrant_sandbox_state: absent
+  tags:
+    - cleanup
+    - sandbox
