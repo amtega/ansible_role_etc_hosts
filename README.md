@@ -39,7 +39,7 @@ This is an example playbook:
           - acme4
       - hostnames:
           - www.google.com
-          - www.bing.comm
+          - www.centos.org
         state: present                    
 ```
 

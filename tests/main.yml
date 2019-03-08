@@ -51,7 +51,7 @@
 
       - hostnames:
           - www.google.com
-          - www.bing.com
+          - www.centos.org
         state: present
   tasks:
     - name: read /etc/hosts file

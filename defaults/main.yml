@@ -5,7 +5,10 @@
 #
 # {
 #  address: <adress>              # IP address of the host. If not defined the
-#                                 # role will get address from DNS
+#                                 # role will get address from DNS.
+#                                 # Keep in mind that if DNS search returns
+#                                 # round-robin address the role execution
+#                                 # could not be idempotent
 #  state: <present or absent>     # State of the /etc/hosts entry
 #  hostnames: <list of strings>   # Hostnames to apply
 # }
