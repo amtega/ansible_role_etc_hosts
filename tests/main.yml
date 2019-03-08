@@ -48,6 +48,11 @@
         hostnames:
           - acme3
           - acme4
+
+      - hostnames:
+          - www.google.com
+          - www.bing.com
+        state: present
   tasks:
     - name: read /etc/hosts file
       command: cat /etc/hosts
@@ -60,6 +65,8 @@
           - read_hosts_result.stdout is search("192.168.13.12 acme1 acme2")
           - read_hosts_result.stdout is search("192.168.13.13 acme3 acme4")
           - read_hosts_result.stdout is search("192.168.13.14 acme5 acme6")
+          - read_hosts_result.stdout is search(".* www.google.com")
+          - read_hosts_result.stdout is search(".* www.bing.com")
   tags:
     - idempotence
 

@@ -1,0 +1,18 @@
+{% set ns = namespace(found=false) %}
+{% for etc_hosts_item in etc_hosts + ((etc_hosts_load_from_hostvars)
+                                     | ternary(etc_hosts_hostvars | default([]) | flatten, [])) %}
+{% if etc_hosts_item.address is defined %}
+{% set ns.found = true %}
+- {{ etc_hosts_item }}
+{% else %}
+{% for hostname in etc_hosts_item.hostnames %}
+- address: {{ lookup("dig", hostname).split(",") | first }}
+  state: {{ etc_hosts_item.state | default("present") }}
+  hostnames: [{{ hostname }}]
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+{% if not ns.found %}
+[]
+{% endif %}

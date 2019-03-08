@@ -36,7 +36,11 @@ This is an example playbook:
         state: present
         hostnames:
           - acme3
-          - acme4          
+          - acme4
+      - hostnames:
+          - www.google.com
+          - www.bing.comm
+        state: present                    
 ```
 
 ## Testing
