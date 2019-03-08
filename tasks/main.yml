@@ -7,7 +7,7 @@
         dest: /etc/hosts
         regexp: "^{{ etc_hosts_item.address }} "
         line: >-
-          {{ etc_hosts_item.address}} {{ etc_hosts_item.hostnames | join(' ')}}
+          {{ etc_hosts_item.address }} {{ etc_hosts_item.hostnames | join(' ')}}
         state: "{{ etc_hosts_item.state | default('present') }}"
       loop: "{{ etc_hosts_to_manage }}"
       loop_control:
