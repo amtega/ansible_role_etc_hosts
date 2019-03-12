@@ -1,7 +1,7 @@
 ---
 # Tasks for testing role
 
-- name: run idempotence test
+- name: Run idempotence test
   hosts: localhost
   roles:
     - role: amtega.vagrant_presets
@@ -17,10 +17,10 @@
   tags:
     - sandbox
 
-- name: prepare vagrant vms for test
+- name: Prepare vagrant vms for test
   hosts: vagrant_sandbox_vms
   tasks:
-    - name: setup extra hosts
+    - name: Setup extra hosts
       set_fact:
         etc_hosts_extra:
           address: 192.168.13.14
@@ -31,7 +31,7 @@
   tags:
     - idempotence
 
-- name: test etc_hosts role
+- name: Test etc_hosts role
   hosts: vagrant_sandbox_vms
   roles:
     - amtega.etc_hosts
@@ -54,12 +54,12 @@
           - www.centos.org
         state: present
   tasks:
-    - name: read /etc/hosts file
+    - name: Read /etc/hosts file
       command: cat /etc/hosts
       changed_when: false
       register: read_hosts_result
 
-    - name: check that /etc/hosts contains required hosts
+    - name: Check that /etc/hosts contains required hosts
       assert:
         that:
           - read_hosts_result.stdout is search("192.168.13.12 acme1 acme2")
@@ -70,7 +70,7 @@
   tags:
     - idempotence
 
-- name: cleanup vagrant vagrant sandbox
+- name: Cleanup vagrant vagrant sandbox
   hosts: localhost
   roles:
     - role: amtega.vagrant_sandbox

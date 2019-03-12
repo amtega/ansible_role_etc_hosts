@@ -35,9 +35,10 @@ dependencies:
       - role::etc_hosts
 
   - role: amtega.select_hostvars
-    select_hostvars_pattern: "^etc_hosts_.*"
-    select_hostvars_fact_name: etc_hosts_hostvars
-    select_hostvars_output_type: list
+    select_hostvars_query:
+      pattern: "^etc_hosts_.*"
+      fact_name: etc_hosts_hostvars
+      output_type: list
     when: etc_hosts_load_from_hostvars
     tags:
       - role::etc_hosts
