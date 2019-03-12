@@ -2,7 +2,7 @@
 # Role tasks
 
 - block:
-    - name: setup /etc/hosts entries
+    - name: Setup /etc/hosts entries
       lineinfile:
         dest: /etc/hosts
         regexp: "^{{ etc_hosts_item.address }} "
