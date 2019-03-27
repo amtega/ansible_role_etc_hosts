@@ -16,6 +16,6 @@
         label: "{{ etc_hosts_item.address }}"
   vars:
     etc_hosts_to_manage: >-
-      {{ lookup('template', 'entries.yml.j2') | from_yaml }}
+      {{ lookup("template", "entries.yml.j2") | from_yaml }}
   tags:
     - role::etc_hosts

@@ -37,6 +37,8 @@ dependencies:
   - role: amtega.select_hostvars
     select_hostvars_query:
       pattern: "^etc_hosts_.*"
+      attributes:
+        - hostnames
       fact_name: etc_hosts_hostvars
       output_type: list
     when: etc_hosts_load_from_hostvars
