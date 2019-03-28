@@ -2,6 +2,10 @@
 
 This is an [Ansible](http://www.ansible.com) role that manages /etc/hosts entries.
 
+## Requirements
+
+[dnspython 1.15.0+](http://www.dnspython.org) on the control machine.
+
 ## Role Variables
 
 A list of all the default variables for this role is available in `defaults/main.yml`.
