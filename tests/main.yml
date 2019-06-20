@@ -5,12 +5,13 @@
   hosts: localhost
   roles:
     - role: amtega.vagrant_presets
-      vagrant_presets_images_json_query: >-
-        [? starts_with(name, `centos-6`)
-           || starts_with(name, `centos-7`)
-           || starts_with(name, `debian-9`)
-           || starts_with(name, `fedora-27`)
-           || starts_with(name, `fedora-28`) ]
+      vars:
+        vagrant_presets_images_json_query: >-
+          [? starts_with(name, `centos-6`)
+             || starts_with(name, `centos-7`)
+             || starts_with(name, `debian-9`)
+             || starts_with(name, `fedora-29`)
+             || starts_with(name, `fedora-30`) ]
 
     - role: amtega.vagrant_sandbox
       vagrant_sandbox_state: started
@@ -56,7 +57,7 @@
   tasks:
     - name: Read /etc/hosts file
       command: cat /etc/hosts
-      changed_when: false
+      changed_when: no
       register: read_hosts_result
 
     - name: Check that /etc/hosts contains required hosts
@@ -74,7 +75,8 @@
   hosts: localhost
   roles:
     - role: amtega.vagrant_sandbox
-      vagrant_sandbox_state: absent
+      vars:
+        vagrant_sandbox_state: absent
   tags:
     - cleanup
     - sandbox

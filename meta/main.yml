@@ -18,8 +18,8 @@ galaxy_info:
         - 7
     - name: Fedora
       versions:
-        - 27
-        - 28
+        - 29
+        - 30
   galaxy_tags:
     - network
     - hosts
@@ -30,7 +30,7 @@ dependencies:
       check_platform_distributions:
         centos: 6
         debian: 9
-        fedora: 27
+        fedora: 29
         rhel: 6
     tags:
       - role::etc_hosts
@@ -43,6 +43,6 @@ dependencies:
           - hostnames
         fact_name: etc_hosts_hostvars
         output_type: list
-    when: etc_hosts_load_from_hostvars
+    when: etc_hosts_load_from_hostvars | bool
     tags:
       - role::etc_hosts
