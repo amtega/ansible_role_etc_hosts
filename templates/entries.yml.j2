@@ -7,9 +7,12 @@
 {% else %}
 {% for hostname in etc_hosts_item.hostnames %}
 {% set ns.found = true %}
-- address: {{ lookup("dig", hostname).split(",") | first }}
+{% set address = lookup("dig", hostname).split(",") | first %}
+{% if address | ipaddr %}
+- address: {{ address }}
   state: {{ etc_hosts_item.state | default("present") }}
   hostnames: [{{ hostname }}]
+{% endif %}
 {% endfor %}
 {% endif %}
 {% endfor %}

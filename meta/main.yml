@@ -43,6 +43,6 @@ dependencies:
           - hostnames
         fact_name: etc_hosts_hostvars
         output_type: list
-    when: etc_hosts_load_from_hostvars
+    when: etc_hosts_load_from_hostvars | bool
     tags:
       - role::etc_hosts
