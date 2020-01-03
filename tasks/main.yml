@@ -1,6 +1,26 @@
 ---
 # Role tasks
 
+- include_role:
+    name: amtega.check_platform
+  vars:
+    check_platform_distributions:
+      centos: 6
+      debian: 9
+      fedora: 29
+      rhel: 6
+
+- include_role:
+    name: amtega.select_hostvars
+  vars:
+    select_hostvars_query:
+      pattern: "^etc_hosts_.*"
+      attributes:
+        - hostnames
+      fact_name: etc_hosts_hostvars
+      output_type: list
+  when: etc_hosts_load_from_hostvars | bool
+
 - block:
     - name: Setup /etc/hosts entries
       lineinfile:
