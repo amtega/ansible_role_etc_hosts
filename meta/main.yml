@@ -26,9 +26,19 @@ galaxy_info:
 
 dependencies:
   - role: amtega.check_platform
-    tags:
-      - never
+    vars:
+      check_platform_distributions:
+        centos: 6
+        debian: 9
+        fedora: 29
+        rhel: 6
 
   - role: amtega.select_hostvars
-    tags:
-      - never
+    vars:
+      select_hostvars_query:
+        pattern: "^etc_hosts_.*"
+        attributes:
+          - hostnames
+        fact_name: etc_hosts_hostvars
+        output_type: list
+    when: etc_hosts_load_from_hostvars | bool
