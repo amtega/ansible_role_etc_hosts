@@ -1,7 +1,7 @@
 ---
 # Tasks for testing role
 
-- name: Run idempotence test
+- name: Setup testing sandbox
   hosts: localhost
   roles:
     - role: amtega.vagrant_presets
@@ -9,7 +9,6 @@
         vagrant_presets_images_json_query: >-
           [? starts_with(name, `centos-6`)
              || starts_with(name, `centos-7`)
-             || starts_with(name, `debian-9`)
              || starts_with(name, `fedora-29`)
              || starts_with(name, `fedora-30`) ]
 
