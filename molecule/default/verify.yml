@@ -1,0 +1,19 @@
+---
+
+- name: Verify
+  hosts: molecule_hosts
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Read /etc/hosts file
+      command: cat /etc/hosts
+      changed_when: no
+      register: read_hosts_result
+
+    - name: Check that /etc/hosts contains required hosts
+      assert:
+        that:
+          - read_hosts_result.stdout is search("192.168.13.12 acme1 acme2")
+          - read_hosts_result.stdout is search("192.168.13.13 acme3 acme4")
+          - read_hosts_result.stdout is search("192.168.13.14 acme5 acme6")
+          - read_hosts_result.stdout is search(".* www.usc.es")
