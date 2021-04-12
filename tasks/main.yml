@@ -10,6 +10,7 @@
           {{ etc_hosts_item.address }}
           {{ etc_hosts_item.hostnames | join(' ') }}
         state: "{{ etc_hosts_item.state | default('present') }}"
+        backup: yes
       loop: "{{ etc_hosts_to_manage }}"
       loop_control:
         loop_var: etc_hosts_item
