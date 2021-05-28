@@ -4,7 +4,7 @@
 # List of dicts with entries to manage. The dicts must follow this structure:
 #
 # {
-#  address: <adress>              # IP address of the host. If not defined the
+#  address: <address>             # IP address of the host. If not defined the
 #                                 # role will get address from DNS.
 #                                 # Keep in mind that if DNS search returns
 #                                 # round-robin address the role execution
