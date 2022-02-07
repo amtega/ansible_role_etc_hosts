@@ -4,8 +4,11 @@
   hosts: molecule_hosts
   gather_facts: no
   become: yes
-  tasks:
-    - name: Setup packages
-      package:
-        name: libselinux-python
-        state: present
+  # roles:
+  #   - amtega.selinux
+
+  # tasks:
+  #   - name: Setup packages
+  #     package:
+  #       name: libselinux-python
+  #       state: present
