@@ -1,0 +1,16 @@
+---
+# Role variables
+
+etc_hosts_items_to_manage: >-
+  {{ etc_hosts
+     + ((etc_hosts_load_from_hostvars)
+        | ternary(etc_hosts_hostvars | default([]) | flatten, [])) }}
+
+etc_hosts_items_to_manage_expanded: >-
+  {{ lookup("template", "entries.yml.j2") | from_yaml }}
+
+etc_hosts_dig_required: >-
+  {{ etc_hosts_items_to_manage
+     | selectattr("address", "undefined")
+     | list
+     | length > 0 }}

@@ -40,3 +40,11 @@ dependencies:
         fact_name: etc_hosts_hostvars
         output_type: list
     when: etc_hosts_load_from_hostvars | bool
+
+  - role: amtega.packages
+    vars:
+      packages_os:
+        all:
+          all:
+            bind-utils: present
+    when: etc_hosts_dig_required | bool

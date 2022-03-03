@@ -1,22 +1,39 @@
-{% set ns = namespace(found=false) %}
-{% for etc_hosts_item in etc_hosts + ((etc_hosts_load_from_hostvars)
-                                     | ternary(etc_hosts_hostvars | default([]) | flatten, [])) %}
+{% set ns = namespace(items=[]) %}
+{% for etc_hosts_item in etc_hosts_items_to_manage %}
 {% if etc_hosts_item.address is defined %}
-{% set ns.found = true %}
-- {{ etc_hosts_item }}
+{% set ns.items = ns.items + [etc_hosts_item] %}
 {% else %}
 {% for hostname in etc_hosts_item.hostnames %}
-{% set ns.found = true %}
-{% set address = lookup("dig", hostname).split(",") | first %}
-{% if address | ipaddr %}
-- address: {{ address }}
-  state: {{ etc_hosts_item.state | default("present") }}
-  hostnames: [{{ hostname }}]
+{% for r in etc_hosts_gather_address_result.results %}
+{% if r.etc_hosts_item.0 == etc_hosts_item
+   and r.etc_hosts_item.1 == hostname
+   and r.stdout | length > 0 %}
+{% set ns.items = ns.items
+                  + [{"address": r.stdout,
+                      "state": etc_hosts_item.state | default("present"),
+                      "hostnames": [hostname]}] %}
 {% endif %}
+{% endfor %}
 {% endfor %}
 {% endif %}
 {% endfor %}
 
-{% if not ns.found %}
+{% if ns.items | length == 0 %}
 []
+{% else %}
+{% set items_absent = ns.items
+                      | selectattr("state", "equalto", "absent")
+                      | list %}
+{% set items_present = ns.items | difference(items_absent) %}
+
+{% for address, items in items_present | groupby("address") %}
+- address: {{ address }}
+  state: present
+  hostnames: {{ items | map(attribute="hostnames") | list | sort | unique | sum(start=[]) }}
+{% endfor %}
+{% for address, items in items_absent | groupby("address") %}
+- address: {{ address }}
+  state: absent
+  hostnames: {{ items | map(attribute="hostnames") | list | sort | unique | sum(start=[]) }}
+{% endfor %}
 {% endif %}
