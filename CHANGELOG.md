@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2020-03-03
+### Changed
+- Refactored role to be executed remote (not using lookups).
+
 ## [1.3.0] - 2020-02-07
 ### Changed
 - Supported distros. Related to ansible/main#178
